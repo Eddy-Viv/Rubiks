@@ -6,5 +6,10 @@ namespace Rubiks
     {
       InitializeComponent();
     }
+
+    private void buttonTopLeft_Click(object sender, EventArgs e)
+    {
+      labelTopLeft.Text = "My button has been pressed";
+    }
   }
 }
