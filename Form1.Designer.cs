@@ -28,12 +28,45 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.components = new System.ComponentModel.Container();
-      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(800, 450);
-      this.Text = "Form1";
+      buttonTopLeft = new Button();
+      labelTopLeft = new Label();
+      SuspendLayout();
+      // 
+      // buttonTopLeft
+      // 
+      buttonTopLeft.Location = new Point(37, 27);
+      buttonTopLeft.Name = "buttonTopLeft";
+      buttonTopLeft.Size = new Size(75, 23);
+      buttonTopLeft.TabIndex = 0;
+      buttonTopLeft.Text = "click over here";
+      buttonTopLeft.UseVisualStyleBackColor = true;
+      buttonTopLeft.Click += buttonTopLeft_Click;
+      // 
+      // labelTopLeft
+      // 
+      labelTopLeft.AutoSize = true;
+      labelTopLeft.Location = new Point(31, 62);
+      labelTopLeft.Name = "labelTopLeft";
+      labelTopLeft.Size = new Size(44, 15);
+      labelTopLeft.TabIndex = 1;
+      labelTopLeft.Text = "default";
+      // 
+      // Form1
+      // 
+      AutoScaleDimensions = new SizeF(7F, 15F);
+      AutoScaleMode = AutoScaleMode.Font;
+      ClientSize = new Size(800, 450);
+      Controls.Add(labelTopLeft);
+      Controls.Add(buttonTopLeft);
+      Name = "Form1";
+      Text = "Form1";
+      ResumeLayout(false);
+      PerformLayout();
     }
 
     #endregion
+
+    private Button buttonTopLeft;
+    private Label labelTopLeft;
   }
 }
