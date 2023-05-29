@@ -1,0 +1,17 @@
+C:\Users\ed\Desktop\Csharp\Rubiks\bin\Debug\net6.0-windows\Rubiks.exe
+C:\Users\ed\Desktop\Csharp\Rubiks\bin\Debug\net6.0-windows\Rubiks.deps.json
+C:\Users\ed\Desktop\Csharp\Rubiks\bin\Debug\net6.0-windows\Rubiks.runtimeconfig.json
+C:\Users\ed\Desktop\Csharp\Rubiks\bin\Debug\net6.0-windows\Rubiks.dll
+C:\Users\ed\Desktop\Csharp\Rubiks\bin\Debug\net6.0-windows\Rubiks.pdb
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.csproj.AssemblyReference.cache
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.Form1.resources
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.csproj.GenerateResource.cache
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.AssemblyInfoInputs.cache
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.AssemblyInfo.cs
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.csproj.CoreCompileInputs.cache
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.dll
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\refint\Rubiks.dll
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.pdb
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.genruntimeconfig.cache
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\ref\Rubiks.dll
