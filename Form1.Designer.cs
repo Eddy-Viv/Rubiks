@@ -1,6 +1,6 @@
 ﻿namespace Rubiks
 {
-  partial class Rubiks
+  partial class Form1
   {
     /// <summary>
     ///  Required designer variable.
@@ -51,7 +51,7 @@
       labelTopLeft.TabIndex = 1;
       labelTopLeft.Text = "default";
       // 
-      // Rubiks
+      // Form1
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
@@ -59,8 +59,9 @@
       ClientSize = new Size(1350, 747);
       Controls.Add(labelTopLeft);
       Controls.Add(buttonTopLeft);
-      Name = "Rubiks";
+      Name = "Form1";
       Text = "Rubiks";
+      Load += Rubiks_Load;
       Paint += Form1_Paint;
       ResumeLayout(false);
       PerformLayout();

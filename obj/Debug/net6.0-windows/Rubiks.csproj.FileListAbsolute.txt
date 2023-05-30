@@ -14,4 +14,4 @@ C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\refint\Rubiks.dll
 C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.pdb
 C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.genruntimeconfig.cache
 C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\ref\Rubiks.dll
-C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.Rubiks.resources
+C:\Users\ed\Desktop\Csharp\Rubiks\obj\Debug\net6.0-windows\Rubiks.Form1.resources
