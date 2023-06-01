@@ -31,6 +31,9 @@
             SquareSizeUp = new Button();
             SquareSizeDown = new Button();
             SquareSizeText = new Label();
+            MoveInputBox = new TextBox();
+            MoveInputButton = new Button();
+            MoveChainLabel = new Label();
             SuspendLayout();
             // 
             // SquareSizeUp
@@ -63,12 +66,41 @@
             SquareSizeText.TabIndex = 2;
             SquareSizeText.Text = "Square Size";
             // 
+            // MoveInputBox
+            // 
+            MoveInputBox.Location = new Point(34, 493);
+            MoveInputBox.Name = "MoveInputBox";
+            MoveInputBox.Size = new Size(100, 23);
+            MoveInputBox.TabIndex = 3;
+            // 
+            // MoveInputButton
+            // 
+            MoveInputButton.Location = new Point(146, 502);
+            MoveInputButton.Name = "MoveInputButton";
+            MoveInputButton.Size = new Size(75, 23);
+            MoveInputButton.TabIndex = 4;
+            MoveInputButton.Text = "Enter";
+            MoveInputButton.UseVisualStyleBackColor = true;
+            MoveInputButton.Click += MoveInputButton_Click;
+            // 
+            // MoveChainLabel
+            // 
+            MoveChainLabel.AutoSize = true;
+            MoveChainLabel.Location = new Point(43, 466);
+            MoveChainLabel.Name = "MoveChainLabel";
+            MoveChainLabel.Size = new Size(73, 15);
+            MoveChainLabel.TabIndex = 5;
+            MoveChainLabel.Text = "Input Moves";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(1350, 747);
+            Controls.Add(MoveChainLabel);
+            Controls.Add(MoveInputButton);
+            Controls.Add(MoveInputBox);
             Controls.Add(SquareSizeText);
             Controls.Add(SquareSizeDown);
             Controls.Add(SquareSizeUp);
@@ -85,5 +117,8 @@
         private Button SquareSizeUp;
         private Button SquareSizeDown;
         private Label SquareSizeText;
+        private TextBox MoveInputBox;
+        private Button MoveInputButton;
+        private Label MoveChainLabel;
     }
 }
