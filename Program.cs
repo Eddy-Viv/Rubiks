@@ -1,11 +1,14 @@
 namespace Rubiks
 {
 
+    //simulates puzzle cube
     public class CubePuzzle
     {
 
+        //stores the colour value of each face
         private int[,] faces = new int[6, 8];
 
+        //returns the face colour
         public int GetFaceColour(int x, int y = -1)
         {
             if ((x < 6) && (x >= 0) && (y < 8) && (y >= 0))
@@ -50,6 +53,7 @@ namespace Rubiks
             init();
         }
 
+        //initial solved state of the cube
         public void init()
         {
             for (int i = 0; i < 6; i++)
@@ -61,6 +65,25 @@ namespace Rubiks
             }
         }
 
+
+        /*
+        moves are of the form:
+        X*
+        where X is the face to be moved:
+        B = Blue
+        G = Green
+        R = Red
+        Y = Yellow
+        O = Orange
+        W = White
+
+        and * is the type of movement:
+        ] = 90 deg clockwise
+        [ = 90 deg anticlockwise
+        2 = 180 degrees
+        */
+
+        //takes a string of potentially many moves, delimited by commas.
         public void move(string input)
         {
             if (input == "")
@@ -90,7 +113,7 @@ namespace Rubiks
 
             if (onemove != -1)
             {
-                move(input.Substring(onemove + 2));
+                move(input.Substring(onemove + 1));
             }
 
         }
@@ -99,6 +122,7 @@ namespace Rubiks
     internal static class Program
     {
 
+        //required for windows forms
         [STAThread]
         static void Main()
         {
