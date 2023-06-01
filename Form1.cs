@@ -16,6 +16,7 @@ namespace Rubiks
         public void SetLocCube(CubePuzzle inp)
         {
             locCube = inp;
+            Invalidate();
         }
 
         public Form1()
@@ -37,6 +38,9 @@ namespace Rubiks
             SquareSizeText.Location = new System.Drawing.Point(14 * stbSize, stbSize);
             SquareSizeUp.Location = new System.Drawing.Point(14 * stbSize, 2 * stbSize);
             SquareSizeDown.Location = new System.Drawing.Point(14 * stbSize, 3 * stbSize);
+            MoveChainLabel.Location = new System.Drawing.Point(stbSize, 11 * stbSize);
+            MoveInputBox.Location = new System.Drawing.Point(stbSize, 12 * stbSize);
+            MoveInputButton.Location = new System.Drawing.Point(3 * stbSize, 12 * stbSize);
 
             //initialise the graphics object
             Graphics g = e.Graphics;
@@ -150,6 +154,14 @@ namespace Rubiks
             stbSize = squareSize + borderSize;
 
             //refresh the form
+            Invalidate();
+        }
+
+        private void MoveInputButton_Click(object sender, EventArgs e)
+        {
+            string moves = MoveInputBox.Text;
+            MoveInputBox.Text = "";
+            locCube.Move(moves);
             Invalidate();
         }
     }
