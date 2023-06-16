@@ -46,9 +46,18 @@ namespace Rubiks
 
         private double[][,] parameterDerivatives;
 
-        private double[,] hiddenLayerVals;
+        private double[,,] hiddenLayerVals;
 
-        private double learningRate, loss;
+        private double learningRate, loss, itSinceBP;
+
+        public double LearningRate { 
+            get {
+                return learningRate;
+            }
+            set {
+                learningRate = value;
+            }
+        }
 
         private double log2E;
 
@@ -60,7 +69,7 @@ namespace Rubiks
             label = new bool[noOutputs];
             layers = new double[0][,];
             parameterDerivatives = new double[0][,];
-            hiddenLayerVals = new double[0,0];
+            hiddenLayerVals = new double[0,0,0];
 
             if (noLayers == 1) { 
                 layers = new double[1][,];
@@ -70,7 +79,7 @@ namespace Rubiks
             } else if (noLayers > 1) { 
                 layers = new double[noLayers][,];
                 parameterDerivatives = new double[noLayers][,];
-                hiddenLayerVals = new double[noLayers - 1, width + 1];
+                hiddenLayerVals = new double[noLayers - 1, width + 1, 2];
                 layers[0] = new double[noInputs, width];
                 layers[noLayers - 1] = new double[width + 1, noOutputs];
                 parameterDerivatives[0] = new double[noInputs, width];
@@ -87,6 +96,7 @@ namespace Rubiks
             Init();
 
             log2E = Math.Log2(Math.E);
+            itSinceBP = 0;
 
         }
 
@@ -109,8 +119,9 @@ namespace Rubiks
             input[input.Length - 1] = 1;
             for (int i = 0; i < hiddenLayerVals.GetLength(0); i++)
             {
-                hiddenLayerVals[i, hiddenLayerVals.GetLength(1) - 1] = 1;
+                hiddenLayerVals[i, hiddenLayerVals.GetLength(1) - 1, 1] = 1;
             }
+            itSinceBP = 0;
         }
 
         public void Eval() { 
@@ -118,7 +129,7 @@ namespace Rubiks
             for (int i = 0; i < hiddenLayerVals.GetLength(0); i++) { 
                 for (int j = 0; j < hiddenLayerVals.GetLength(1) - 1; j++)
                 {
-                    hiddenLayerVals[i, j] = 0;
+                    hiddenLayerVals[i, j, 0] = 0;
                 }
             }
             for (int i = 0; i < output.Length; i++)
@@ -128,25 +139,31 @@ namespace Rubiks
 
             for (int j = 0; j < layers[0].GetLength(0); j++) { 
                 for (int k = 0; k < layers[0].GetLength(1); k++) {
-                    hiddenLayerVals[0, k] += input[j] * layers[0][j, k];
+                    hiddenLayerVals[0, k, 0] += input[j] * layers[0][j, k];
                 }
             }
-            // activate here
+            for (int i = 0; i < hiddenLayerVals.GetLength(1); i++)
+            {
+                hiddenLayerVals[0, i, 1] = Activate(hiddenLayerVals[0, i, 0]);
+            }
 
             for (int i = 1; i < layers.Length - 1; i++) { 
                 for (int j = 0; j < layers[i].GetLength(0); j++) { 
                     for (int k = 0; k < layers[i].GetLength(1); k++)
                     {
-                        hiddenLayerVals[i,k] += hiddenLayerVals[i - 1, j] * layers[i][j, k];
+                        hiddenLayerVals[i,k, 0] += hiddenLayerVals[i - 1, j, 1] * layers[i][j, k];
                     }
                 }
-                //activate here
+                for (int j = 0; j < hiddenLayerVals.GetLength(1); j++)
+                {
+                    hiddenLayerVals[i, j, 1] = Activate(hiddenLayerVals[i, j, 0]);
+                }
             }
 
             for (int j = 0; j < layers[layers.Length - 1].GetLength(0); j++) { 
                 for (int k = 0; k < layers[layers.Length - 1].GetLength(1); k++)
                 {
-                    output[k] += hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, j] * layers[layers.Length - 1][j, k];
+                    output[k] += hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, j, 1] * layers[layers.Length - 1][j, k];
                 }
             }
         }
@@ -165,9 +182,9 @@ namespace Rubiks
 
             for (int i = 0; i < output.Length; i++) { 
                 if ((output[i] > 0) && !label[i]) { 
-                    loss += output[i];
+                    loss += Activate(output[i]);
                 } else if ((output[i] < 0) && label[i]) { 
-                    loss -= output[i];
+                    loss -= Activate(output[i]);
                 }
             }
 
@@ -176,8 +193,49 @@ namespace Rubiks
 
 
 
-        public void backPropagate() { 
-            
+        public void BackPropagate() { 
+            for (int i = 0; i < layers[layers.Length - 1].GetLength(0); i++) { 
+                for (int j = 0; j < layers[layers.Length - 1].GetLength(1); j++)
+                {
+                    if ((output[j] > 0) && !label[j])
+                    {
+                        parameterDerivatives[parameterDerivatives.Length - 1][i, j] += DerActivation(output[j]) * hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, i, 1];
+                    }
+                    else if ((output[j] < 0) && label[j])
+                    {
+                        parameterDerivatives[parameterDerivatives.Length - 1][i, j] -= DerActivation(output[j]) * hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, i, 1];
+                    }
+                }
+            }
+
+            for (int i = layers.Length - 2; i >= 1; i--) { 
+                for (int j = 0; j < layers[i].GetLength(0); j++) { 
+                    for (int k = 0; k < layers[i].GetLength(1); k++)
+                    {
+                        parameterDerivatives[i][j, k] += DerActivation(hiddenLayerVals[i, k, 0]) * hiddenLayerVals[i - 1, j, 1];
+                    }
+                }
+            }
+
+            for (int i = 0 ; i < layers[0].GetLength(0); i++) { 
+                for (int j = 0; j < layers[0].GetLength(1); j++)
+                {
+                    parameterDerivatives[0][i, j] += input[i] * DerActivation(hiddenLayerVals[0, j, 0]); 
+                }
+            }
+            itSinceBP++;
+        }
+
+        public void ApplyBackProp() { 
+            for (int i = 0; i < layers.Length; i++) { 
+                for (int j = 0; j < layers[i].GetLength(0); j++) { 
+                    for (int k = 0; k < layers[i].GetLength(1); k++)
+                    {
+                        layers[i][j, k] -= learningRate * parameterDerivatives[i][j, k] / itSinceBP;
+                    }
+                }
+            }
+            itSinceBP = 0;
         }
 
 
