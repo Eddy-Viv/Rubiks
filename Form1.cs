@@ -16,11 +16,6 @@ namespace Rubiks
         private CubePuzzle locCube;
 
         //sets the state of the local copy of the cube puzzle
-        public void SetLocCube(CubePuzzle inp)
-        {
-            locCube = inp;
-            Invalidate();
-        }
 
         public Form1()
         {

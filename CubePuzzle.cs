@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Rubiks
 {
     //simulates puzzle cube
-    public class CubePuzzle
+    internal class CubePuzzle
     {
 
         //stores the colour value of each face

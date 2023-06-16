@@ -48,7 +48,8 @@ namespace Rubiks
 
         private double[,,] hiddenLayerVals;
 
-        private double learningRate, loss, itSinceBP;
+        private double learningRate, loss;
+        int itSinceBP;
 
         public double LearningRate { 
             get {
