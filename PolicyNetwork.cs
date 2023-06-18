@@ -48,8 +48,14 @@ namespace Rubiks
 
         private double[,,] hiddenLayerVals;
 
-        private double learningRate, loss;
+        private double learningRate, loss, averageLoss;
         int itSinceBP;
+
+        public double AverageLoss { 
+            get { 
+                return averageLoss;
+            }
+        }
 
         public double LearningRate { 
             get {
@@ -64,7 +70,7 @@ namespace Rubiks
 
        
 
-        PolicyNetwork(int noInputs, int noOutputs, int noLayers = 1, int width = 2) { 
+        public PolicyNetwork(int noInputs, int noOutputs, int noLayers = 1, int width = 2) { 
             input = new double[noInputs];
             output = new double[noOutputs];
             label = new bool[noOutputs];
@@ -98,6 +104,9 @@ namespace Rubiks
 
             log2E = Math.Log2(Math.E);
             itSinceBP = 0;
+            learningRate = 0.001;
+            loss = 0;
+            averageLoss = 0;
 
         }
 
@@ -179,32 +188,33 @@ namespace Rubiks
         }
 
         public double Loss() { 
-            loss = 0;
+            double lloss = 0;
 
             for (int i = 0; i < output.Length; i++) { 
-                if ((output[i] > 0) && !label[i]) { 
-                    loss += Activate(output[i]);
-                } else if ((output[i] < 0) && label[i]) { 
-                    loss -= Activate(output[i]);
+                if ((Activate(output[i]) > -1) && !label[i]) { 
+                    lloss += Activate(output[i] + 1);
+                } else if ((Activate(output[i]) < 1) && label[i]) { 
+                    lloss -= Activate(output[i] - 1);
                 }
             }
 
-            return loss;
+            return lloss;
         }
 
 
 
         public void BackPropagate() { 
+            loss += Loss();
             for (int i = 0; i < layers[layers.Length - 1].GetLength(0); i++) { 
                 for (int j = 0; j < layers[layers.Length - 1].GetLength(1); j++)
                 {
-                    if ((output[j] > 0) && !label[j])
+                    if ((Activate(output[j]) > -1) && !label[j])
                     {
-                        parameterDerivatives[parameterDerivatives.Length - 1][i, j] += DerActivation(output[j]) * hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, i, 1];
+                        parameterDerivatives[parameterDerivatives.Length - 1][i, j] += DerActivation(output[j] + 2) * hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, i, 1];
                     }
-                    else if ((output[j] < 0) && label[j])
+                    else if ((Activate(output[j]) < 1) && label[j])
                     {
-                        parameterDerivatives[parameterDerivatives.Length - 1][i, j] -= DerActivation(output[j]) * hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, i, 1];
+                        parameterDerivatives[parameterDerivatives.Length - 1][i, j] -= DerActivation(output[j] - 2) * hiddenLayerVals[hiddenLayerVals.GetLength(0) - 1, i, 1];
                     }
                 }
             }
@@ -228,6 +238,8 @@ namespace Rubiks
         }
 
         public void ApplyBackProp() { 
+            averageLoss = loss / itSinceBP;
+            loss = 0;
             for (int i = 0; i < layers.Length; i++) { 
                 for (int j = 0; j < layers[i].GetLength(0); j++) { 
                     for (int k = 0; k < layers[i].GetLength(1); k++)

@@ -58,7 +58,14 @@
             HalfTurnLabel = new Label();
             ShuffleMoves = new NumericUpDown();
             ShuffleButton = new Button();
+            Train = new Button();
+            BatchSize = new NumericUpDown();
+            NoMoves = new NumericUpDown();
+            BatchSizeLabel = new Label();
+            NoMovesLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)ShuffleMoves).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)BatchSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)NoMoves).BeginInit();
             SuspendLayout();
             // 
             // SquareSizeUp
@@ -351,12 +358,63 @@
             ShuffleButton.UseVisualStyleBackColor = true;
             ShuffleButton.Click += ShuffleButton_Click;
             // 
+            // Train
+            // 
+            Train.Location = new Point(943, 154);
+            Train.Name = "Train";
+            Train.Size = new Size(75, 23);
+            Train.TabIndex = 30;
+            Train.Text = "Train";
+            Train.UseVisualStyleBackColor = true;
+            Train.Click += Train_Click;
+            // 
+            // BatchSize
+            // 
+            BatchSize.Location = new Point(961, 21);
+            BatchSize.Maximum = new decimal(new int[] { 1410065408, 2, 0, 0 });
+            BatchSize.Name = "BatchSize";
+            BatchSize.Size = new Size(75, 23);
+            BatchSize.TabIndex = 31;
+            BatchSize.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            // 
+            // NoMoves
+            // 
+            NoMoves.Location = new Point(950, 97);
+            NoMoves.Name = "NoMoves";
+            NoMoves.Size = new Size(75, 23);
+            NoMoves.TabIndex = 32;
+            NoMoves.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // BatchSizeLabel
+            // 
+            BatchSizeLabel.AutoSize = true;
+            BatchSizeLabel.Location = new Point(891, 24);
+            BatchSizeLabel.Name = "BatchSizeLabel";
+            BatchSizeLabel.Size = new Size(60, 15);
+            BatchSizeLabel.TabIndex = 33;
+            BatchSizeLabel.Text = "Batch Size";
+            // 
+            // NoMovesLabel
+            // 
+            NoMovesLabel.AutoSize = true;
+            NoMovesLabel.Location = new Point(886, 83);
+            NoMovesLabel.MaximumSize = new Size(80, 0);
+            NoMovesLabel.Name = "NoMovesLabel";
+            NoMovesLabel.Size = new Size(68, 30);
+            NoMovesLabel.TabIndex = 34;
+            NoMovesLabel.Text = "Number of moves";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(1784, 961);
+            Controls.Add(NoMovesLabel);
+            Controls.Add(BatchSizeLabel);
+            Controls.Add(NoMoves);
+            Controls.Add(BatchSize);
+            Controls.Add(Train);
             Controls.Add(ShuffleButton);
             Controls.Add(ShuffleMoves);
             Controls.Add(HalfTurnLabel);
@@ -392,6 +450,8 @@
             Load += Rubiks_Load;
             Paint += Form1_Paint;
             ((System.ComponentModel.ISupportInitialize)ShuffleMoves).EndInit();
+            ((System.ComponentModel.ISupportInitialize)BatchSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)NoMoves).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -428,5 +488,10 @@
         private Label HalfTurnLabel;
         private NumericUpDown ShuffleMoves;
         private Button ShuffleButton;
+        private Button Train;
+        private NumericUpDown BatchSize;
+        private NumericUpDown NoMoves;
+        private Label BatchSizeLabel;
+        private Label NoMovesLabel;
     }
 }
