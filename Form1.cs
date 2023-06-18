@@ -15,12 +15,27 @@ namespace Rubiks
         //local copy of the state of the cube puzzle, not master copy.
         private CubePuzzle locCube;
 
-        //sets the state of the local copy of the cube puzzle
+        PolicyNetwork NN;
+        PNFeeder PNConverter;
+
+        string[] consoleText; 
+
+        public void PrintToConsole(string inp) { 
+            for (int i = 15; i > 0; i--)
+            {
+                consoleText[i] = consoleText[i - 1];
+            }
+            consoleText[0] = inp;
+            Invalidate();
+        }
 
         public Form1()
         {
             InitializeComponent();
             locCube = new CubePuzzle();
+            NN = new PolicyNetwork(289, 18, 4, 100);
+            PNConverter = new PNFeeder();
+            consoleText = new string[16];
         }
 
         public void reInit()
@@ -42,6 +57,12 @@ namespace Rubiks
 
             ShuffleButton.Location = new System.Drawing.Point(5 * stbSize, 11 * stbSize);
             ShuffleMoves.Location = new System.Drawing.Point(5 * stbSize, 12 * stbSize);
+
+            BatchSize.Location = new System.Drawing.Point(17 * stbSize, stbSize);
+            NoMoves.Location = new System.Drawing.Point(17 * stbSize, 2 * stbSize);
+            Train.Location = new System.Drawing.Point(17 * stbSize, 3 * stbSize);
+            BatchSizeLabel.Location = new System.Drawing.Point(16 * stbSize, stbSize);
+            NoMovesLabel.Location = new System.Drawing.Point(16 * stbSize, 2 * stbSize);
 
             MoveButtonLabel.Location = new System.Drawing.Point(11 * stbSize, 8 * stbSize);
             ClockwiseLabel.Location = new System.Drawing.Point(8 * stbSize, 9 * stbSize);
@@ -150,6 +171,14 @@ namespace Rubiks
                 }
             }
 
+            SolidBrush blackBrush = new SolidBrush(Color.Black);
+            rect = new Rectangle(15 * stbSize, 4 * stbSize, 8 * stbSize, 8 * stbSize);
+            e.Graphics.FillRectangle(blackBrush, rect);
+            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", stbSize / 2);
+            for (int i = 0; i < 16; i++) {
+                PointF writePoint = new PointF(15 * stbSize, (11.5f - (0.5f * i)) * stbSize);
+                e.Graphics.DrawString(consoleText[i], drawFont, whiteBrush, writePoint);
+            }
         }
 
         private void Rubiks_Load(object sender, EventArgs e)
@@ -299,47 +328,26 @@ namespace Rubiks
 
         private void ShuffleButton_Click(object sender, EventArgs e)
         {
-            string moves = "";
-            int prevmove = -1, thismove = -1;
-            for (int i = 0; i < ShuffleMoves.Value; i++) { 
-                do { 
-                    thismove = rnd.Next(6);
-                } while (thismove == prevmove);
-                prevmove = thismove;
-                switch(thismove) { 
-                case 0:
-                        moves += "B";
-                        break;
-                case 1:
-                        moves += "G";
-                        break;
-                case 2:
-                        moves += "R";
-                        break;
-                case 3:
-                        moves += "Y";
-                        break;
-                case 4:
-                        moves += "O";
-                        break;
-                case 5:
-                        moves += "W";
-                        break;
-                }
-                switch (rnd.Next(3)) { 
-                    case 0:
-                        moves += "]";
-                        break;
-                    case 1:
-                        moves += "[";
-                        break;
-                    case 2:
-                        moves += "2";
-                        break;
-                }
-            }
-            locCube.Move(moves);
+            locCube.Move(locCube.GenerateMoves((int)ShuffleMoves.Value));
             Invalidate();
+        }
+
+        private void Train_Click(object sender, EventArgs e)
+        {
+            PrintToConsole("Training for: " + BatchSize.Value + " samples.");
+            for (int i = 0; i < BatchSize.Value; i++)
+            {
+                string moves = locCube.GenerateMoves((int)NoMoves.Value);
+                locCube.init();
+                locCube.Move(moves);
+                NN.Input = PNConverter.ConvertCubeFaces(locCube);
+                NN.Label = PNConverter.ConvertMoveSetToLabel(moves);
+                NN.Eval();
+                NN.BackPropagate();
+            }
+            NN.ApplyBackProp();
+            PrintToConsole("Loss: " + NN.AverageLoss);
+
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Rubiks
     internal class CubePuzzle
     {
 
+        Random rnd = new Random();
+
         //stores the colour value of each face
         private int[,] faces = new int[6, 8];
 
@@ -87,6 +89,53 @@ namespace Rubiks
         [ = 90 deg anticlockwise
         2 = 180 degrees
         */
+
+        public string GenerateMoves(int inp) {
+            string moves = "";
+            int prevmove = -1, thismove = -1;
+            for (int i = 0; i < inp; i++)
+            {
+                do
+                {
+                    thismove = rnd.Next(6);
+                } while (thismove == prevmove);
+                prevmove = thismove;
+                switch (thismove)
+                {
+                    case 0:
+                        moves += "B";
+                        break;
+                    case 1:
+                        moves += "G";
+                        break;
+                    case 2:
+                        moves += "R";
+                        break;
+                    case 3:
+                        moves += "Y";
+                        break;
+                    case 4:
+                        moves += "O";
+                        break;
+                    case 5:
+                        moves += "W";
+                        break;
+                }
+                switch (rnd.Next(3))
+                {
+                    case 0:
+                        moves += "]";
+                        break;
+                    case 1:
+                        moves += "[";
+                        break;
+                    case 2:
+                        moves += "2";
+                        break;
+                }
+            }
+            return moves;
+        }
 
         //takes a string of potentially many moves, delimited by commas.
         public void Move(string input)
